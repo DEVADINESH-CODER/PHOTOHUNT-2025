@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;" class="overflow-x-hidden w-full max-w-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoHunt 2025 - Inter-College Photography Competition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-card {
+            transform: translateY(0px);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mesh-gradient {
+            background: radial-gradient(circle at 20% 50%, #120a8f 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, #ff006e 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, #8338ec 0%, transparent 50%),
+                        radial-gradient(circle at 0% 50%, #3a86ff 0%, transparent 50%);
+        }
+        
+        .photo-frame {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        /* Sparkling Effect */
+        .sparkles {
+            pointer-events: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+        
+        .sparkle:nth-child(1) {
+            top: 20%;
+            left: 30%;
+            animation-delay: 0s;
+        }
+        
+        .sparkle:nth-child(2) {
+            top: 60%;
+            left: 70%;
+            animation-delay: 1s;
+        }
+        
+        .sparkle:nth-child(3) {
+            top: 40%;
+            left: 50%;
+            animation-delay: 0.5s;
+        }
+        
+        .sparkle:nth-child(4) {
+            top: 80%;
+            left: 20%;
+            animation-delay: 1.5s;
+        }
+        
+        .sparkle:nth-child(5) {
+            top: 10%;
+            left: 80%;
+            animation-delay: 0.8s;
+        }
+        
+        /* Hover Effects */
+        .hover-text {
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .hover-text:hover {
+            color: #ffcc00;
+            transform: scale(1.05);
+        }
+        
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .photo-frame:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .morphing-blob {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 8s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        /* Slideshow Animation */
+        .slideshow .slide {
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .text-shadow {
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .hero-text {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .pulse-text {
+            animation: pulse 2s infinite;
+        }
+        
+        .glow-button {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+        
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
+        }
+        
+        .mascot-animation {
+            animation: mascotPulse 3s infinite;
+        }
+        
+        .status-pulse {
+            animation: statusPulse 2s infinite;
+        }
+        
+        @keyframes statusPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .sparkle-animation {
+            animation: sparkle 1.5s infinite;
+        }
+        
+        .sparkle-animation:nth-child(2n) {
+            animation-delay: 0.5s;
+        }
+        
+        .sparkle-animation:nth-child(3n) {
+            animation-delay: 1s;
+        }
+        
+        .sparkle-animation:nth-child(4n) {
+            animation-delay: 1.5s;
+        }
+        
+        .blob-animation {
+            animation: blob 15s infinite;
+        }
+        
+        .blob-animation:nth-child(2) {
+            animation-delay: 5s;
+        }
+        
+        .blob-animation:nth-child(3) {
+            animation-delay: 10s;
+        }
+        
+        .section-header {
+            animation: sectionFadeIn 1s ease-out;
+        }
+        
+        @keyframes sectionFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        
+        @keyframes mascotPulse {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+        
+        .theme-card {
+            transition: all 0.3s ease;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Themes section */
+        #themes .glass-effect {
+            background: linear-gradient(145deg, rgba(30, 30, 40, 0.5), rgba(20, 20, 30, 0.7));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        #themes .glass-effect:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        /* Offset for fixed nav (JS will set --nav-offset) */
+        :root { --nav-offset: 340px; }
+        html { scroll-padding-top: var(--nav-offset); }
+
+        /* Smooth anchor offset for in-page links */
+        section { scroll-margin-top: calc(var(--nav-offset) + 16px); }
+
+        /* Neutralize legacy #home padding to avoid double spacing */
+        #home { padding-top: 0 !important; }
+        
+        /* Responsive rules no longer set .hero padding; JS handles it dynamically */
+        @media (max-width: 1024px) { /* padding handled dynamically by JS */ }
+        @media (max-width: 768px)  { /* padding handled dynamically by JS */ }
+        @media (max-width: 640px)  { /* padding handled dynamically by JS */ }
+        @media (max-width: 480px)  { /* padding handled dynamically by JS */ }
+
+        @media (max-width: 1024px) {
+            #home {
+                padding-top: 350px;
+            }
+        }
+        
+        /* Section header animation */
+        @keyframes sectionHeader {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            animation: sectionHeader 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @media (max-width: 768px) {
+            #home {
+                padding-top: 380px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            #home {
+                padding-top: 340px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #home {
+                padding-top: 320px;
+            }
+        }
+        
+        /* Mobile navigation improvements */
+        @media (max-width: 768px) {
+            .mobile-text-sm {
+                font-size: 0.75rem;
+                line-height: 1rem;
+            }
+            
+            .mobile-text-xs {
+                font-size: 0.625rem;
+                line-height: 0.875rem;
+            }
+        }
+        
+        /* Chatbot Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Floating Mascot Styles */
+        .mascot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        .floating-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Chatbot Styles */
+        #chatbot {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 999;
+            max-height: 500px;
+        }
+        
+        .custom-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+        }
+        
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(139, 92, 246, 0.3);
+            border-radius: 3px;
+        }
+        
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            #chatbot {
+                right: 10px;
+                left: 10px;
+                width: auto;
+                max-width: none;
+            }
+            
+            .mascot {
+                right: 10px;
+                bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full bg-gray-900/90 backdrop-blur-sm z-50 border-b border-purple-500/20 transition-all duration-300">
+        <!-- Full Header (visible when at top) -->
+        <div id="fullHeader" class="w-full max-w-full px-2 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 flex flex-col items-center overflow-x-hidden transition-all duration-300">
+            <!-- Main Navigation Layout -->
+            <div class="w-full flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-2 sm:space-y-3 lg:space-y-0">
+                
+                <!-- Left - College Logo -->
+                <div class="flex justify-center lg:justify-start flex-shrink-0">
+                    <img src="https://imgs.search.brave.com/u4cNggCd8oj5xtMo6fSkgB758PkEYi7g8KssWKz5iwY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ha20t/aW1nLWEtaW4udG9z/c2h1Yi5jb20vc2l0/ZXMvcmVzb3VyY2Vz/L2NhbXB1cy9wcm9k/L2ltZy9sb2dvLzIw/MjMvOS9sb2dvMTI0/NzMwNzU3MDg5Ny5q/cGc"
+                         alt="APEC Logo"
+                         class="h-10 w-auto object-contain sm:h-12 lg:h-16">
+                </div>
+
+                <!-- Center - College Info -->
+                <div class="flex-1 text-center px-2">
+                    <div class="text-sm sm:text-base lg:text-lg text-white font-bold mobile-text-sm">Adhiparasakthi Engineering College</div>
+                    <div class="text-xs sm:text-sm text-gray-400 mobile-text-xs">Melmaruvathur-603319</div>
+                    <div class="text-xs sm:text-sm text-purple-300 mobile-text-xs">Department of Computer Science and Engineering</div>
+                </div>
+
+                <!-- Right - CSI Info -->
+                <div class="flex flex-col items-center lg:items-end space-y-1 sm:space-y-2 flex-shrink-0">
+                    <div class="text-center lg:text-right">
+                        <p class="text-xs sm:text-sm text-white font-medium mobile-text-xs">In association with</p>
+                        <p class="text-xs sm:text-sm font-bold text-blue-300 mobile-text-xs">Computer Society of India</p>
+                        <p class="text-xs text-blue-200 mobile-text-xs">Kancheepuram Chapter</p>
+                    </div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8AktAs8ohWJZqTUs7z0qBSLQ-CqdH2X5GBg&s"
+                         alt="CSI Logo"
+                         class="h-8 w-auto object-contain sm:h-10 lg:h-14">
+                </div>
+            </div>
+
+            <!-- Organises Section -->
+            <div class="mt-2 sm:mt-4 lg:mt-6 text-center">
+                <div class="text-orange-400 text-sm sm:text-base lg:text-lg font-bold tracking-wider mb-1 sm:mb-2">Organises</div>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                    PHOTO HUNT 2025
+                </h1>
+            </div>
+        </div>
+
+        <!-- Compact Navigation (visible when scrolling) -->
+        <div id="compactNav" class="w-full px-2 sm:px-4 lg:px-6 py-2 sm:py-3 hidden">
+            <div class="flex flex-col items-center space-y-2 sm:space-y-3">
+                <!-- PhotoHunt 2025 Title -->
+                <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center text-white bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                    PHOTOHUNT 2025
+                </h1>
+                <!-- Navigation Links -->
+                <div class="hidden lg:flex justify-center items-center space-x-4 xl:space-x-6">
+                    <a href="#home" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Home</a>
+                    <a href="#about" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">About</a>
+                    <a href="#themes" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Themes</a>
+                    <a href="#rules" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Rules</a>
+                    <a href="#prizes" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Prizes</a>
+                    <a href="#register" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Register</a>
+                    <a href="#gallery" class="hover:text-purple-400 transition-colors font-medium text-sm uppercase tracking-wider hover-text">Gallery</a>
+                   </div>
+                
+                <!-- Mobile Navigation Links (responsive layout) -->
+                <div class="lg:hidden">
+                    <!-- First Row: Home, About, Themes, Rules -->
+                    <div class="flex flex-wrap justify-center items-center gap-x-2 gap-y-1 sm:gap-x-3 sm:gap-y-2 mb-2">
+                        <a href="#home" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Home</a>
+                        <a href="#about" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">About</a>
+                        <a href="#themes" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Themes</a>
+                        <a href="#rules" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Rules</a>
+                    </div>
+                    <!-- Second Row: Prizes, Register, Gallery, Contact -->
+                    <div class="flex flex-wrap justify-center items-center gap-x-2 gap-y-1 sm:gap-x-3 sm:gap-y-2">
+                        <a href="#prizes" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Prizes</a>
+                        <a href="#register" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Register</a>
+                        <a href="#gallery" class="hover:text-purple-400 transition-colors font-medium text-xs sm:text-sm uppercase tracking-wider px-1 hover-text">Gallery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Button (only visible on very small screens) -->
+        <button class="sm:hidden text-white absolute top-3 right-3 z-10" onclick="toggleMenu()">
+            <i class="fas fa-bars text-lg"></i>
+        </button>
+        
+        <!-- Mobile Menu (only for very small screens) -->
+        <div id="mobileMenu" class="hidden sm:hidden absolute top-full left-0 w-full bg-gray-900/95 backdrop-blur-lg border-t border-purple-500/20 py-3 px-4 z-50">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Home</a>
+                <a href="#about" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">About</a>
+                <a href="#rules" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Rules</a>
+                <a href="#themes" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Themes</a>
+                <a href="#prizes" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Prizes</a>
+                <a href="#register" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Register</a>
+                <a href="#gallery" class="text-white hover:text-purple-400 transition-colors font-medium py-2 text-sm" onclick="toggleMenu()">Gallery</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Spacer to push content below fixed navbar -->
+    <div id="nav-spacer" style="height: var(--nav-offset);" aria-hidden="true"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen flex items-center justify-center">
+        <!-- Photo Slideshow Background -->
+        <div class="slideshow absolute inset-0 z-0">
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+            <div class="slide absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+        </div>
+        <!-- Sparkling Entry Effect -->
+        <div class="sparkles absolute inset-0 z-10 pointer-events-none">
+            <div class="sparkle sparkle-animation absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute bottom-1/4 left-1/3 w-1 h-1 bg-purple-300 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute top-1/2 right-1/4 w-1.5 h-1.5 bg-pink-300 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute bottom-1/3 left-1/2 w-1 h-1 bg-blue-200 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute top-1/4 right-1/2 w-2 h-2 bg-purple-200 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute bottom-1/4 right-1/3 w-1.5 h-1.5 bg-pink-200 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute top-2/3 left-1/4 w-1 h-1 bg-blue-300 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute bottom-1/2 right-1/2 w-1.5 h-1.5 bg-purple-300 rounded-full"></div>
+            <div class="sparkle sparkle-animation absolute top-1/3 left-2/3 w-1 h-1 bg-pink-300 rounded-full"></div>
+        </div>
+        
+        <div class="text-center z-10 max-w-6xl mx-auto px-4 sm:px-6 relative">
+            <div class="mb-8 sm:mb-12">
+                <div class="inline-flex items-center justify-center mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-4 shadow-lg shadow-blue-500/20">
+                        <i class="fas fa-camera text-2xl text-white"></i>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text hover-text hero-text pulse-text">PHOTOHUNT</h1>
+                        <div class="text-lg sm:text-xl text-gray-400 hero-text">2025 Edition</div>
+                    </div>
+                </div>
+
+                <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400 hover-text hero-text pulse-text">
+                    Capture the Moment,
+                    <span class="block mt-2 gradient-text hover-text hero-text pulse-text">Create the Memory</span>
+                </h2>
+
+                <p class="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed font-light hover-text hero-text">
+                    An inter-college photography competition celebrating visual storytelling, creativity, and the art of capturing life's most precious moments.
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center px-4 mb-12">
+                <a href="#register" class="px-8 sm:px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-lg sm:text-xl font-bold hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center hover-text pulse-text glow-button">
+                    <i class="fas fa-rocket mr-3"></i> Register Now
+                </a>
+                <a href="#themes" class="px-8 sm:px-10 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-lg sm:text-xl font-bold hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center hover-text pulse-text glow-button">
+                    <i class="fas fa-compass mr-3 text-purple-400"></i> Explore Themes
+                </a>
+                <a href="#prizes" class="px-8 sm:px-10 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-lg sm:text-xl font-bold hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center hover-text pulse-text glow-button">
+                    <i class="fas fa-gift mr-3 text-yellow-400"></i> See Prizes
+                </a>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto mb-12">
+                <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 hover-text status-pulse">
+                    <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+                    <span class="text-gray-300 hero-text">Registrations Open</span>
+                </div>
+                <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 status-pulse">
+                    <i class="fas fa-users text-blue-400 mr-3"></i>
+                    <span class="text-gray-300">Inter-College Event</span>
+                </div>
+                <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 status-pulse">
+                    <i class="fas fa-calendar-alt text-purple-400 mr-3"></i>
+                    <span class="text-gray-300">19 August 2025</span>
+                </div>
+            </div>
+            
+            <!-- Hanging Quote Elements -->
+            <div class="relative max-w-4xl mx-auto mt-16 mb-24">
+                <!-- Decorative hanging quotes -->
+                <div class="absolute -left-8 -top-8 text-6xl text-purple-500/20 transform -rotate-12">"</div>
+                <div class="absolute -right-8 -bottom-8 text-6xl text-purple-500/20 transform rotate-12">"</div>
+                
+                <!-- Quote Carousel -->
+                <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+                    <div class="relative z-10 text-center">
+                        <p class="text-xl md:text-2xl text-gray-200 italic mb-6">"A photograph is a secret about a secret. The more it tells you the less you know."</p>
+                        <p class="text-lg text-purple-300 font-medium">- Diane Arbus</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
+                    <span class="text-purple-400 font-medium">About PhotoHunt</span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Capture. Create. Compete.</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                    PhotoHunt 2025 is not just another photography competition. It's a celebration of visual storytelling, 
+                    technical excellence, and creative vision that brings together the brightest photography talents from colleges across the region.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-purple-500/30 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-2xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Inter-College Competition</h3>
+                    <p class="text-gray-400 mb-6">Bringing together talented photographers from colleges across the region to showcase their skills and creativity.</p>
+                    <div class="flex items-center text-blue-400 font-medium">
+                        <span>All colleges welcome</span>
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-purple-500/30 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-camera-retro text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Creative Themes</h3>
+                    <p class="text-gray-400 mb-6">Unique photography themes designed to challenge your creativity and push your artistic boundaries.</p>
+                    <div class="flex items-center text-purple-400 font-medium">
+                        <span>Explore themes</span>
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-purple-500/30 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-trophy text-2xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Amazing Prizes</h3>
+                    <p class="text-gray-400 mb-6">Exciting rewards for winners including professional software subscriptions and recognition.</p>
+                    <div class="flex items-center text-yellow-400 font-medium">
+                        <span>See prizes</span>
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-3xl p-10 backdrop-blur-sm relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6 text-white">Why Participate?</h3>
+                        <p class="text-gray-300 mb-8 leading-relaxed">
+                            PhotoHunt 2025 offers a unique opportunity to showcase your photography skills, connect with fellow 
+                            photography enthusiasts, and gain recognition for your creative work. Whether you're a beginner or 
+                            an experienced photographer, this competition is designed to challenge and inspire you.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-300">Professional feedback from expert judges</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-300">Networking with photography enthusiasts</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-300">Portfolio enhancement opportunities</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-300">Certificates and recognition</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="relative">
+                            <div class="w-64 h-64 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+                                <div class="text-center z-10">
+                                    <div class="text-5xl mb-4">📸</div>
+                                    <p class="text-white font-medium">Your Masterpiece</p>
+                                    <p class="text-gray-400 text-sm mt-2">Awaits to be captured</p>
+                                </div>
+                            </div>
+                            <div class="absolute -top-4 -right-4 w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center animate-pulse">
+                                <i class="fas fa-star text-yellow-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hanging Quote Element -->
+            <div class="relative max-w-3xl mx-auto mt-16">
+                <div class="absolute -left-6 -top-6 text-5xl text-purple-500/20 transform -rotate-12">"</div>
+                <div class="absolute -right-6 -bottom-6 text-5xl text-purple-500/20 transform rotate-12">"</div>
+                
+                <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+                    <div class="relative z-10">
+                        <p class="text-lg text-gray-200 italic mb-4">"Your first 10,000 photographs are your worst."</p>
+                        <p class="text-purple-300 font-medium">- Henri Cartier-Bresson</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section id="rules" class="py-24 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 blob-animation"></div>
+            <div class="absolute top-1/3 right-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 blob-animation"></div>
+            <div class="absolute bottom-1/4 left-1/2 w-64 h-64 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 blob-animation"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
+                    <span class="text-blue-400 font-medium">Competition Guidelines</span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Rules & Regulations</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Everything you need to know before participating in PhotoHunt 2025</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-10 mb-16">
+                <!-- Eligibility -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-blue-500/30 transition-all duration-300">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mr-4">
+                            <i class="fas fa-user-check text-2xl text-green-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Eligibility Criteria</h3>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">Open to All College Students</h4>
+                                <p class="text-gray-400 text-sm">Students from any college or university can participate. Both individual and team submissions are welcome.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-graduation-cap text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">Valid College ID Required</h4>
+                                <p class="text-gray-400 text-sm">Participants must provide a valid college ID during registration and verification.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-infinity text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">All Skill Levels Welcome</h4>
+                                <p class="text-gray-400 text-sm">Beginners and professionals alike are encouraged to participate. Learning and creativity matter most.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-user text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">One Entry Per Participant</h4>
+                                <p class="text-gray-400 text-sm">Each participant may submit only one photograph for the competition to ensure fairness.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submission Guidelines -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-purple-500/30 transition-all duration-300">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 flex items-center justify-center mr-4">
+                            <i class="fas fa-file-upload text-2xl text-purple-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Submission Guidelines</h3>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-camera text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">Original Work Only</h4>
+                                <p class="text-gray-400 text-sm">All submissions must be original photographs taken by the participant. No AI-generated or heavily edited images.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-file-image text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">Technical Requirements</h4>
+                                <p class="text-gray-400 text-sm">Images must be in JPG, PNG, or WEBP format with a maximum file size of 10MB and minimum resolution of 1920px on the longest side.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-ban text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">No Watermarks or Logos</h4>
+                                <p class="text-gray-400 text-sm">Images must not contain watermarks, logos, borders, or any identifying marks that reveal the photographer's identity.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-4 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-exclamation-circle text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold mb-2 text-white">Content Appropriateness</h4>
+                                <p class="text-gray-400 text-sm">Images must be appropriate for all audiences and not contain offensive, violent, or inappropriate content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Competition Format -->
+            <div class="bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-3xl p-10 backdrop-blur-sm relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="text-center mb-12">
+                        <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
+                            <span class="text-yellow-400 font-medium">Competition Structure</span>
+                        </div>
+                        <h3 class="text-3xl sm:text-4xl font-bold mb-6 gradient-text">Competition Format</h3>
+                        <p class="text-xl text-gray-400 max-w-3xl mx-auto">A two-round process designed to identify and celebrate the most creative and technically excellent photographs</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <!-- Round 1 -->
+                        <div class="bg-gradient-to-br from-gray-800/70 to-gray-900/70 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300">
+                            <div class="flex items-center mb-6">
+                                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center mr-4">
+                                    <span class="text-2xl font-bold text-cyan-400">1</span>
+                                </div>
+                                <h4 class="text-2xl font-bold text-white">Submission Round</h4>
+                            </div>
+                            
+                            <p class="text-gray-300 mb-8 leading-relaxed">
+                                Participants submit their photographs based on the announced theme. Entries will be judged on creativity, composition, and technical excellence.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-calendar-alt text-cyan-400 mr-3"></i>
+                                    <span>Registration opens: 12-08-2025</span>
+                                </div>
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-upload text-cyan-400 mr-3"></i>
+                                    <span>Submission deadline: 18-09-2025</span>
+                                </div>
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-search text-cyan-400 mr-3"></i>
+                                    <span>Judging period: 24 hrs</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Round 2 -->
+                        <div class="bg-gradient-to-br from-gray-800/70 to-gray-900/70 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm hover:border-pink-500/30 transition-all duration-300">
+                            <div class="flex items-center mb-6">
+                                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mr-4">
+                                    <span class="text-2xl font-bold text-pink-400">2</span>
+                                </div>
+                                <h4 class="text-2xl font-bold text-white">Final Round</h4>
+                            </div>
+                            
+                            <p class="text-gray-300 mb-8 leading-relaxed">
+                                Top entries from Round 1 compete for the ultimate prizes. Winners will be announced at the grand finale event with expert judging panel.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-trophy text-pink-400 mr-3"></i>
+                                    <span>Top entries shortlisted: --</span>
+                                </div>
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-user-friends text-pink-400 mr-3"></i>
+                                    <span>Expert panel judging: --</span>
+                                </div>
+                                <div class="flex items-center text-gray-400 bg-gray-800/30 rounded-lg px-4 py-3">
+                                    <i class="fas fa-calendar-check text-pink-400 mr-3"></i>
+                                    <span>Grand finale event: 19 August 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photography Themes -->
+    <section id="themes" class="py-20 bg-gradient-to-b from-gray-900 via-purple-900/20 to-black relative overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-3">
+                        <span class="text-xl">📷</span>
+                    </div>
+                    <h2 class="text-5xl font-bold gradient-text">Photography Themes</h2>
+                </div>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto mt-6">Discover six unique themes designed to challenge your creativity and showcase your unique perspective.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Theme 1 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">🌅</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-purple-300 mb-1">Golden Hour Glow</h3>
+                            <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Capture the magical light of sunrise or sunset. Showcase how warm, soft light transforms ordinary scenes into extraordinary moments.</p>
+                    <div class="text-sm text-purple-400 font-medium">#LightPhotography</div>
+                </div>
+                
+                <!-- Theme 2 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">🏙️</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-300 mb-1">Urban Jungle</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Explore the concrete wilderness of city life. From towering skyscrapers to bustling streets, capture the energy and rhythm of urban landscapes.</p>
+                    <div class="text-sm text-blue-400 font-medium">#StreetPhotography</div>
+                </div>
+                
+                <!-- Theme 3 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-green-500/50 hover:shadow-xl hover:shadow-green-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">🎭</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-green-300 mb-1">Emotion in Motion</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Freeze the fleeting expressions of human emotion. Capture joy, sorrow, surprise, or contemplation in all their raw authenticity.</p>
+                    <div class="text-sm text-green-400 font-medium">#Portrait</div>
+                </div>
+                
+                <!-- Theme 4 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-yellow-500/50 hover:shadow-xl hover:shadow-yellow-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">🔬</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-300 mb-1">Macro Magic</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Discover the hidden world of tiny details. Reveal the beauty in small things - from dewdrops to insect wings to textures invisible to the naked eye.</p>
+                    <div class="text-sm text-yellow-400 font-medium">#Nature</div>
+                </div>
+                
+                <!-- Theme 5 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">📸</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-pink-300 mb-1">Reflections</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Explore the world through mirrors, water, glass, and other reflective surfaces. Show how reality can be transformed and reimagined through reflection.</p>
+                    <div class="text-sm text-pink-400 font-medium">#Creative</div>
+                </div>
+                
+                <!-- Theme 6 -->
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 transition-all duration-300 hover:border-red-500/50 hover:shadow-xl hover:shadow-red-500/10">
+                    <div class="flex items-start mb-4">
+                        <div class="text-4xl mr-4">🎓</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-red-300 mb-1">Campus Chronicles</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Document life in your college. From academic moments to social interactions, capture the essence of student life and campus culture.</p>
+                    <div class="text-sm text-red-400 font-medium">#Documentary</div>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <div class="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 max-w-4xl mx-auto">
+                    <h3 class="text-3xl font-bold mb-4 gradient-text">Your Vision, Our Themes</h3>
+                    <p class="text-lg text-gray-300 mb-6 max-w-2xl mx-auto">Each theme is a creative challenge designed to push your boundaries and help you discover new perspectives in photography. Choose the theme that resonates with your artistic vision.</p>
+                    <div class="flex flex-wrap justify-center gap-4 mt-8">
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-full px-6 py-3 flex items-center">
+                            <span class="text-purple-400 mr-2">🎯</span>
+                            <span class="text-gray-200">Creative Challenges</span>
+                        </div>
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-full px-6 py-3 flex items-center">
+                            <span class="text-blue-400 mr-2">🌟</span>
+                            <span class="text-gray-200">Skill Development</span>
+                        </div>
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-full px-6 py-3 flex items-center">
+                            <span class="text-green-400 mr-2">🏆</span>
+                            <span class="text-gray-200">Amazing Prizes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Hanging Quote Element -->
+    <div class="relative max-w-3xl mx-auto mt-16 mb-24">
+        <div class="absolute -left-6 -top-6 text-5xl text-purple-500/20 transform -rotate-12">"</div>
+        <div class="absolute -right-6 -bottom-6 text-5xl text-purple-500/20 transform rotate-12">"</div>
+        
+        <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+            <div class="relative z-10">
+                <p class="text-lg text-gray-200 italic mb-4">"The camera is an instrument that teaches people to see without a camera."</p>
+                <p class="text-purple-300 font-medium">- Garry Winogrand</p>
+            </div>
+        </div>
+    </div>
+    <!-- Prizes Section -->
+    <section id="prizes" class="py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
+                    <span class="text-yellow-400 font-medium">Win Amazing Rewards</span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Prizes & Rewards</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Prizes will be announced soon. Stay tuned!</p>
+                
+                
+            </div>
+            
+            <div class="grid md:grid-cols-1 gap-8 mb-16">
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-10 backdrop-blur-sm text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4">
+                        <i class="fas fa-trophy text-yellow-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-yellow-400 mb-2">Prizes</h3>
+                    <p class="text-gray-300">Will be announced soon. Please check back later.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Hanging Quote Element -->
+        <div class="relative max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="400">
+            <div class="absolute -left-6 -top-6 text-5xl text-purple-500/20 transform -rotate-12">"</div>
+            <div class="absolute -right-6 -bottom-6 text-5xl text-purple-500/20 transform rotate-12">"</div>
+            
+            <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+                <div class="relative z-10">
+                    <p class="text-lg text-gray-200 italic mb-4">"Your first 10,000 photographs are your worst."</p>
+                    <p class="text-purple-300 font-medium">- Henri Cartier-Bresson</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="register" class="py-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
+                    <span class="text-green-400 font-medium">Join the Hunt</span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Register for PhotoHunt</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Ready to showcase your photography skills? Register now for PhotoHunt 2025</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-3xl p-8 md:p-12 backdrop-blur-sm relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-green-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <form id="registrationForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Full Name *</label>
+                                <input type="text" name="name" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Enter your full name">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Email Address *</label>
+                                <input type="email" name="email" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Enter your email">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">College Name *</label>
+                                <input type="text" name="college" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Enter your college name">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Department *</label>
+                                <input type="text" name="department" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Enter your department">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Year of Study *</label>
+                                <select name="year" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors">
+                                    <option value="" class="bg-gray-800">Select Year</option>
+                                    <option value="1st Year" class="bg-gray-800">1st Year</option>
+                                    <option value="2nd Year" class="bg-gray-800">2nd Year</option>
+                                    <option value="3rd Year" class="bg-gray-800">3rd Year</option>
+                                    <option value="4th Year" class="bg-gray-800">4th Year</option>
+                                    <option value="5th Year" class="bg-gray-800">5th Year</option>
+                                    <option value="Other" class="bg-gray-800">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Phone Number *</label>
+                                <input type="tel" name="phone" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Enter your phone number">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Photography Theme *</label>
+                                <select name="theme" required class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors">
+                                    <option value="" class="bg-gray-800">Select Theme</option>
+                                    <option value="golden-hour" class="bg-gray-800">Golden Hour Glow</option>
+                                    <option value="urban-jungle" class="bg-gray-800">Urban Jungle</option>
+                                    <option value="emotion-motion" class="bg-gray-800">Emotion in Motion</option>
+                                    <option value="macro-magic" class="bg-gray-800">Macro Magic</option>
+                                    <option value="reflections" class="bg-gray-800">Reflections</option>
+                                    <option value="campus-chronicles" class="bg-gray-800">Campus Chronicles</option>
+                                </select>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Photography Experience</label>
+                                <textarea name="experience" rows="3" class="w-full bg-indigo-900/50 border border-indigo-500/30 rounded-xl px-4 py-3 text-white focus:border-indigo-400 focus:outline-none transition-colors" placeholder="Tell us about your photography experience (optional)"></textarea>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Photo Submission *</label>
+                                <div class="bg-indigo-900/30 border-2 border-dashed border-indigo-500/30 rounded-xl p-8 text-center cursor-pointer transition-colors hover:border-indigo-400 group" id="dropZone">
+                                    <input type="file" name="photo" accept="image/*" required class="hidden" id="photoUpload">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-cloud-upload-alt text-2xl text-indigo-400"></i>
+                                        </div>
+                                        <p class="text-gray-300 mb-1">Drag & drop your photo here</p>
+                                        <p class="text-gray-500 text-sm mb-4">or</p>
+                                        <button type="button" class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Browse Files</button>
+                                        <p class="text-gray-500 text-sm mt-4" id="fileName">No file chosen</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center mb-6">
+                            <input type="checkbox" id="terms" required class="w-4 h-4 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500">
+                            <label for="terms" class="ml-2 text-sm text-gray-300">I agree to the <a href="#" class="text-indigo-400 hover:underline">terms and conditions</a></label>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl text-lg font-bold hover:shadow-2xl hover:shadow-green-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center glow-button">
+                            <i class="fas fa-paper-plane mr-3"></i> Submit Registration
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6 gradient-text">Gallery</h2>
+                <p class="text-xl text-gray-400">Coming soon – Stunning photographs and event highlights!</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="photo-frame bg-gradient-to-br from-blue-500/20 to-cyan-500/20 h-64 flex items-center justify-center">
+                    <i class="fas fa-camera text-4xl text-white/50"></i>
+                </div>
+                <div class="photo-frame bg-gradient-to-br from-purple-500/20 to-pink-500/20 h-64 flex items-center justify-center">
+                    <i class="fas fa-image text-4xl text-white/50"></i>
+                </div>
+                <div class="photo-frame bg-gradient-to-br from-green-500/20 to-teal-500/20 h-64 flex items-center justify-center">
+                    <i class="fas fa-palette text-4xl text-white/50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="relative max-w-3xl mx-auto mt-16" data-aos="fade-up" data-aos-delay="400">
+            <div class="absolute -left-6 -top-6 text-5xl text-purple-500/20 transform -rotate-12">"</div>
+            <div class="absolute -right-6 -bottom-6 text-5xl text-purple-500/20 transform rotate-12">"</div>
+            
+            <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+                <div class="relative z-10">
+                    <p class="text-lg text-gray-200 italic mb-4">"Photography is a way of feeling, of touching, of loving."</p>
+                    <p class="text-purple-300 font-medium">- Aaron Siskind</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Hanging Quote Element -->
+    <div class="relative max-w-3xl mx-auto mt-16 mb-24">
+        <div class="absolute -left-6 -top-6 text-5xl text-purple-500/20 transform -rotate-12">"</div>
+        <div class="absolute -right-6 -bottom-6 text-5xl text-purple-500/20 transform rotate-12">"</div>
+        
+        <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5"></div>
+            <div class="relative z-10">
+                <p class="text-lg text-gray-200 italic mb-4">"Photography is the art of making memories tangible."</p>
+                <p class="text-purple-300 font-medium">- Destin Sparks</p>
+            </div>
+        </div>
+    </div>
+
+   <!-- Footer -->
+    <footer class="py-12 bg-black border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-camera text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">PhotoHunt 2025</span>
+                </div>
+                <p class="text-gray-400 mb-8">Capture the Moment, Create the Memory</p>
+                <div class="text-sm text-gray-500">
+                    2025 Adhiparasakthi Engineering College. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase JS (UMD) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.10/dist/umd/supabase.js"></script>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+        
+        // Dynamically set CSS variable for nav height so hero/anchors never hide
+        (function() {
+            const root = document.documentElement;
+            const navbar = document.getElementById('navbar');
+            let ticking = false;
+
+            function updateNavOffset(extra = 0) {
+                if (!navbar) return;
+                // Measure the full rendered height including borders
+                const height = Math.ceil(navbar.getBoundingClientRect().height);
+                // Add a small breathing space below the nav
+                const offset = height + 16 + extra; // px
+                root.style.setProperty('--nav-offset', offset + 'px');
+            }
+
+            function requestUpdate() {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(() => {
+                        updateNavOffset();
+                        ticking = false;
+                    });
+                }
+            }
+
+            // Initial set on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => updateNavOffset());
+            } else {
+                updateNavOffset();
+            }
+
+            // Update on resize and scroll (covers compact header transitions)
+            window.addEventListener('resize', requestUpdate, { passive: true });
+            window.addEventListener('scroll', requestUpdate, { passive: true });
+
+            // If the nav content toggles via classes, observe for size changes
+            if (window.ResizeObserver) {
+                new ResizeObserver(() => requestUpdate()).observe(navbar);
+            }
+        })();
+        
+        // Handle file selection for photo upload
+        document.getElementById('photoUpload').addEventListener('change', function(e) {
+            const fileNameSpan = document.getElementById('photoFileName');
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                fileNameSpan.textContent = file.name;
+                
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size exceeds 10MB limit. Please choose a smaller file.');
+                    this.value = '';
+                    fileNameSpan.textContent = 'Click to upload your photo';
+                    return;
+                }
+                
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file type. Please upload a JPG, PNG, or WEBP image.');
+                    this.value = '';
+                    fileNameSpan.textContent = 'Click to upload your photo';
+                    return;
+                }
+            } else {
+                fileNameSpan.textContent = 'Click to upload your photo';
+            }
+        });
+        
+        // Supabase configuration
+        const supabaseUrl = 'https://qdyetknifporssjravoi.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkeWV0a25pZnBvcnNzanJhdm9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTM4NDYsImV4cCI6MjA2OTAyOTg0Nn0.WYl6hqJlrUSJO67rQc56a_bXWfdLs-5OVK_Ll7i-v_s';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        const RAW_BUCKET = 'PHOTOHUNT-SUBMISSIONS';
+        const BUCKET_ID = RAW_BUCKET.toLowerCase();
+
+        // Registration form handler
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate that a photo is uploaded
+            const photoFile = document.getElementById('photoUpload').files[0];
+            if (!photoFile || photoFile.size === 0) {
+                alert('Please upload a photo to complete your registration.');
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = 'Register for PhotoHunt 2025 📸';
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Registering...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = new FormData(this);
+
+                // Prepare base registration data
+                const baseData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    college: formData.get('college'),
+                    department: formData.get('department'),
+                    year: formData.get('year'),
+                    phone: formData.get('phone'),
+                    theme: formData.get('theme'),
+                    experience: formData.get('experience'),
+                    registered_at: new Date().toISOString()
+                };
+
+                // Upload photo first to get URL
+                const photoFile = formData.get('photo');
+                let photo_path = null;
+                let photo_url = null;
+                if (photoFile && photoFile.size > 0) {
+                    const safeEmail = baseData.email.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    const fileExt = photoFile.name.split('.').pop();
+                    const fileName = `${safeEmail}_${Date.now()}.${fileExt}`;
+
+                    const { data: storageData, error: storageError } = await supabaseClient.storage
+                        .from(BUCKET_ID)
+                        .upload(fileName, photoFile, { upsert: false, contentType: photoFile.type || 'application/octet-stream' });
+
+                    if (storageError) {
+                        console.error('Photo upload error:', storageError);
+                        throw new Error(storageError.message || 'Photo upload failed');
+                    }
+
+                    photo_path = storageData?.path || fileName;
+                    const { data: publicUrlData } = supabaseClient.storage
+                        .from(BUCKET_ID)
+                        .getPublicUrl(photo_path);
+                    photo_url = publicUrlData?.publicUrl || null;
+                }
+
+                // Insert only fields that exist in the current table schema
+                const registrationData = { ...baseData };
+
+                const { error } = await supabaseClient
+                    .from('photohunt_registrations')
+                    .insert([registrationData]);
+
+                if (error) {
+                    throw new Error('Registration failed: ' + error.message);
+                }
+
+                alert(' Registration Successful!\n\nWelcome to PhotoHunt 2025! We\'ll contact you with further details soon.');
+                this.reset();
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert(' Registration Failed\n\n' + error.message + '\n\nPlease try again or contact support.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            const fullHeader = document.getElementById('fullHeader');
+            const compactNav = document.getElementById('compactNav');
+            
+            if (window.scrollY > 100) {
+                // When scrolled down, show compact navigation
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+                if (fullHeader && compactNav) {
+                    fullHeader.classList.add('hidden');
+                    compactNav.classList.remove('hidden');
+                }
+            } else {
+                // When at top, show full header with college branding
+                nav.style.background = 'rgba(255, 255, 255, 0.1)';
+                if (fullHeader && compactNav) {
+                    fullHeader.classList.remove('hidden');
+                    compactNav.classList.add('hidden');
+                }
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    
+                    // Scroll to target element
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                easing: 'ease-in-out'
+            });
+        });
+        // Chatbot functionality
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            chatbot.classList.toggle('hidden');
+            if (!chatbot.classList.contains('hidden')) {
+                // Scroll to bottom of chat when opened
+                const chatMessages = chatbot.querySelector('.chat-messages');
+                if (chatMessages) {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message to chat
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Process the message and generate response
+                setTimeout(() => {
+                    processMessage(message);
+                }, 500);
+            }
+        }
+        
+        function askQuestion(question) {
+            const input = document.getElementById('chatInput');
+            input.value = question;
+            sendMessage();
+        }
+        
+        function addMessage(text, sender) {
+            const chatMessages = document.querySelector('.chat-messages');
+            if (!chatMessages) return;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-3 ${sender === 'user' ? 'text-right' : 'text-left'} animate-fadeIn`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = `inline-block p-3 rounded-2xl max-w-xs sm:max-w-sm ${sender === 'user' ? 'bg-purple-600 text-white rounded-br-none' : 'bg-gray-800 text-white rounded-bl-none'}`;
+            messageContent.textContent = text;
+            
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function processMessage(message) {
+            let response = "I'm sorry, I didn't understand that. You can ask me about PhotoHunt 2025, the rules, themes, or prizes!";
+            
+            const lowerMsg = message.toLowerCase();
+            
+            if (lowerMsg.includes('hello') || lowerMsg.includes('hi') || lowerMsg.includes('hey')) {
+                response = "Hello there! 📸 I'm your PhotoHunt 2025 assistant. How can I help you today?";
+            } else if (lowerMsg.includes('prize') || lowerMsg.includes('prizes') || lowerMsg.includes('reward')) {
+                response = "PhotoHunt 2025 offers exciting prizes worth ₹8,000+! 🏆\n\n" +
+                          "Will me Announced Soon";
+
+            } else if (lowerMsg.includes('theme')) {
+                response = "PhotoHunt 2025 features 6 exciting themes:\n\n" +
+                          "🏞️ " +
+                          "🏙️ " +
+                          "👥 Refer to Themes Section"
+                          "Participants will choose their preferred theme during registration. Final theme assignments will be announced closer to the event date to ensure fairness and variety.";
+            } else if (lowerMsg.includes('rule') || lowerMsg.includes('guideline')) {
+                response = "Here are the key rules for PhotoHunt 2025:\n\n" +
+                          "✅ Open to all college students (1st to final year)\n" +
+                          "✅ Individual participation only\n" +
+                          "✅ Valid college ID required\n" +
+                          "✅ One entry per participant\n\n" +
+                          "For submissions:\n" +
+                          "✅ Original, unpublished photos only\n" +
+                          "✅ Max file size: 10MB\n" +
+                          "✅ JPG, PNG, or WEBP format\n" +
+                          "✅ No watermarks or logos\n" +
+                          "✅ No offensive or inappropriate content\n\n" +
+                          "Competition Format:\n" +
+                          "1️⃣ Submission Round: Online photo submission\n" +
+                          "2️⃣ Final Round: Shortlisted entries compete for prizes\n\n" +
+                          "For full details, visit the Rules section on our website!";
+            } else if (lowerMsg.includes('register') || lowerMsg.includes('sign up')) {
+                response = "You can register for PhotoHunt 2025 by:\n\n" +
+                          "1️⃣ Visiting the Registration section on our website\n" +
+                          "2️⃣ Filling out the registration form\n" +
+                          "3️⃣ Uploading your photo submission\n" +
+                          "4️⃣ Submitting your entry\n\n" +
+                          "Registration is free and open to all college students!";
+            } else if (lowerMsg.includes('date') || lowerMsg.includes('when')) {
+                response = "PhotoHunt 2025 is happening this year! 📅\n\n" +
+                          "• Registration Deadline: Coming soon\n" +
+                          "• Submission Round: Coming soon\n" +
+                          "• Final Round: Coming soon\n\n" +
+                          "Stay tuned for exact dates!";
+            } else if (lowerMsg.includes('thank')) {
+                response = "You're welcome! 📸 If you have any more questions about PhotoHunt 2025, feel free to ask!";
+            } else if (lowerMsg.includes('help')) {
+                response = "I can help you with information about:\n\n" +
+                          "• Prizes and rewards 🏆\n" +
+                          "• Competition rules 📜\n" +
+                          "• Photography themes 📸\n" +
+                          "• Registration process ✍️\n" +
+                          "• Contact information 📞\n\n" +
+                          "Just ask me anything!";
+            }
+            
+            addMessage(response, 'bot');
+        }
+        
+        // Add bounce animation to mascot on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const mascot = document.querySelector('.mascot');
+            if (mascot) {
+                setTimeout(() => {
+                    mascot.classList.add('bounce');
+                }, 1000);
+                
+                setTimeout(() => {
+                    mascot.classList.remove('bounce');
+                }, 1500);
+            }
+        });
+    </script>
+    
+    <!-- Chatbot Interface -->
+    <div id="chatbot" class="fixed bottom-24 right-4 w-80 max-w-[90vw] bg-gray-900/95 backdrop-blur-sm border border-purple-500/30 rounded-2xl shadow-2xl z-50 hidden">
+        <!-- Chatbot Header -->
+        <div class="p-4 border-b border-gray-700 flex items-center justify-between bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-t-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
+                    <span class="text-xl">📸</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white">PhotoHunt Assistant</h3>
+                    <p class="text-xs text-gray-400">Online now</p>
+                </div>
+            </div>
+            <button onclick="toggleChatbot()" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages p-4 h-64 overflow-y-auto custom-scroll">
+            <div class="mb-3 text-left animate-fadeIn">
+                <div class="inline-block p-3 rounded-2xl bg-gray-800 text-white rounded-bl-none max-w-xs sm:max-w-sm">
+                    Hello! 📸 I'm your PhotoHunt 2025 assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="mb-3 text-left animate-fadeIn">
+                <div class="inline-block p-3 rounded-2xl bg-gray-800 text-white rounded-bl-none max-w-xs sm:max-w-sm">
+                    You can ask me about prizes, rules, themes, or registration!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Questions -->
+        <div class="p-3 border-t border-gray-700">
+            <p class="text-gray-400 text-xs mb-2">Quick questions:</p>
+            <div class="flex flex-wrap gap-1">
+                <button onclick="askQuestion('Prizes?')" class="bg-purple-600/30 text-purple-200 px-2 py-1 rounded text-xs hover:bg-purple-600/50 transition-colors">Prizes?</button>
+                <button onclick="askQuestion('Themes?')" class="bg-blue-600/30 text-blue-200 px-2 py-1 rounded text-xs hover:bg-blue-600/50 transition-colors">Themes?</button>
+                <button onclick="askQuestion('Rules?')" class="bg-red-600/30 text-red-200 px-2 py-1 rounded text-xs hover:bg-red-600/50 transition-colors">Rules?</button>
+                <button onclick="askQuestion('Register?')" class="bg-green-600/30 text-green-200 px-2 py-1 rounded text-xs hover:bg-green-600/50 transition-colors">Register?</button>
+                <button onclick="askQuestion('Contact?')" class="bg-yellow-600/30 text-yellow-200 px-2 py-1 rounded text-xs hover:bg-yellow-600/50 transition-colors">Contact?</button>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="p-3 border-t border-gray-700">
+            <div class="flex space-x-2">
+                <input type="text" id="chatInput" placeholder="Type your message..." class="flex-1 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-white text-sm focus:outline-none focus:border-purple-500" onkeypress="if(event.key==='Enter')sendMessage()">
+                <button onclick="sendMessage()" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:from-purple-600 hover:to-blue-600 transition-all">
+                    <i class="fas fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chatbot Interface -->
+    <div id="chatbot" class="fixed bottom-24 right-4 w-80 max-w-[90vw] bg-gray-900/95 backdrop-blur-sm border border-purple-500/30 rounded-2xl shadow-2xl z-50 hidden">
+        <!-- Chatbot Header -->
+        <div class="p-4 border-b border-gray-700 flex items-center justify-between bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-t-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
+                    <span class="text-xl">📸</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white">PhotoHunt Assistant</h3>
+                    <p class="text-xs text-gray-400">Online now</p>
+                </div>
+            </div>
+            <button onclick="toggleChatbot()" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages p-4 h-64 overflow-y-auto custom-scroll">
+            <div class="mb-3 text-left animate-fadeIn">
+                <div class="inline-block p-3 rounded-2xl bg-gray-800 text-white rounded-bl-none max-w-xs sm:max-w-sm">
+                    Hello! 📸 I'm your PhotoHunt 2025 assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="mb-3 text-left animate-fadeIn">
+                <div class="inline-block p-3 rounded-2xl bg-gray-800 text-white rounded-bl-none max-w-xs sm:max-w-sm">
+                    You can ask me about prizes, rules, themes, or registration!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Questions -->
+        <div class="p-3 border-t border-gray-700">
+            <p class="text-gray-400 text-xs mb-2">Quick questions:</p>
+            <div class="flex flex-wrap gap-1">
+                <button onclick="askQuestion('Prizes?')" class="bg-purple-600/30 text-purple-200 px-2 py-1 rounded text-xs hover:bg-purple-600/50 transition-colors">Prizes?</button>
+                <button onclick="askQuestion('Themes?')" class="bg-blue-600/30 text-blue-200 px-2 py-1 rounded text-xs hover:bg-blue-600/50 transition-colors">Themes?</button>
+                <button onclick="askQuestion('Rules?')" class="bg-red-600/30 text-red-200 px-2 py-1 rounded text-xs hover:bg-red-600/50 transition-colors">Rules?</button>
+                <button onclick="askQuestion('Register?')" class="bg-green-600/30 text-green-200 px-2 py-1 rounded text-xs hover:bg-green-600/50 transition-colors">Register?</button>
+                <button onclick="askQuestion('Contact?')" class="bg-yellow-600/30 text-yellow-200 px-2 py-1 rounded text-xs hover:bg-yellow-600/50 transition-colors">Contact?</button>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="p-3 border-t border-gray-700">
+            <div class="flex space-x-2">
+                <input type="text" id="chatInput" placeholder="Type your message..." class="flex-1 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-white text-sm focus:outline-none focus:border-purple-500" onkeypress="if(event.key==='Enter')sendMessage()">
+                <button onclick="sendMessage()" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:from-purple-600 hover:to-blue-600 transition-all">
+                    <i class="fas fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Mascot -->
+    <div class="mascot floating-animation mascot-animation" onclick="toggleChatbot()">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center cursor-pointer shadow-lg hover:shadow-purple-500/30 transition-all hover:scale-110">
+            <span class="text-3xl">📸</span>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize slideshow
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slideshow .slide');
+            let currentSlide = 0;
+            
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => {
+                    slide.classList.remove('opacity-100');
+                    slide.classList.add('opacity-0');
+                });
+                
+                // Show current slide
+                slides[index].classList.remove('opacity-0');
+                slides[index].classList.add('opacity-100');
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            // Show first slide
+            showSlide(currentSlide);
+            
+            // Change slide every 6 seconds for smoother transition
+            setInterval(nextSlide, 6000);
+            
+            // Photo upload functionality
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('photoUpload');
+            const fileName = document.getElementById('fileName');
+            
+            // Click on drop zone to trigger file input
+            dropZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    fileName.textContent = this.files[0].name;
+                }
+            });
+            
+            // Drag and drop functionality
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-indigo-400');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('border-indigo-400');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-indigo-400');
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    fileInput.files = e.dataTransfer.files;
+                    fileName.textContent = e.dataTransfer.files[0].name;
+                }
+            });
+            
+            // Form submission
+            const form = document.getElementById('registrationForm');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> Processing...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Get form data
+                    const formData = new FormData(form);
+                    
+                    // Validate photo
+                    const photoFile = formData.get('photo');
+                    if (!photoFile || photoFile.size === 0) {
+                        throw new Error('Please select a photo to upload');
+                    }
+                    
+                    // Validate file size (10MB max)
+                    if (photoFile.size > 10 * 1024 * 1024) {
+                        throw new Error('File size exceeds 10MB limit. Please choose a smaller file.');
+                    }
+                    
+                    // Validate file type
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                    if (!allowedTypes.includes(photoFile.type)) {
+                        throw new Error('Invalid file type. Please upload a JPEG, PNG, or WebP image.');
+                    }
+                    
+                    // Here you would typically send the data to your server
+                    // For this example, we'll just show a success message
+                    
+                    // Simulate API call delay
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Show success message
+                    alert('Registration submitted successfully! We\'ll contact you with further details.');
+                    
+                    // Reset form
+                    form.reset();
+                    fileName.textContent = 'No file chosen';
+                } catch (error) {
+                    alert('Registration Failed\n\n' + error.message + '\n\nPlease try again.');
+                } finally {
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+            
+            // Contact form submission
+            const contactForm = document.querySelector('#contact form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> Sending...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        // Get form data
+                        const formData = new FormData(contactForm);
+                        const name = formData.get('name');
+                        const email = formData.get('email');
+                        const subject = formData.get('subject');
+                        const message = formData.get('message');
+                        
+                        // Validate required fields
+                        if (!name || !email || !subject || !message) {
+                            throw new Error('Please fill in all required fields.');
+                        }
+                        
+                        // Validate email format
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(email)) {
+                            throw new Error('Please enter a valid email address.');
+                        }
+                        
+                        // Here you would typically send the data to your server
+                        // For this example, we'll just show a success message
+                        
+                        // Simulate API call delay
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        // Show success message
+                        alert('Message sent successfully! We\'ll get back to you soon.');
+                        
+                        // Reset form
+                        contactForm.reset();
+                    } catch (error) {
+                        alert('Message Failed\n\n' + error.message + '\n\nPlease try again.');
+                    } finally {
+                        // Reset button
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
+    
+</body>
+</html>
