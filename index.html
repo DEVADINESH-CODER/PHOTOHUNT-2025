@@ -231,6 +231,91 @@
             100% { transform: scale(1); }
         }
         
+        /* Prize Cards Dynamics */
+        .prize-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            will-change: transform;
+        }
+        .prize-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 50%;
+            height: 200%;
+            transform: rotate(25deg) translateX(-100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+        .prize-card:hover::after {
+            transform: rotate(25deg) translateX(250%);
+        }
+        .prize-card:hover {
+            box-shadow: 0 10px 25px rgba(250, 204, 21, 0.12);
+            border-color: rgba(250, 204, 21, 0.35);
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(250, 204, 21, 0); }
+            50% { box-shadow: 0 0 24px rgba(250, 204, 21, 0.15); }
+        }
+        .prize-card.animate-glow {
+            animation: glowPulse 2.5s infinite;
+        }
+        
+        /* Parallax shapes in Prizes */
+        .prizes-parallax {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .parallax-shape {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(12px);
+            opacity: 0.25;
+            will-change: transform;
+            transition: transform 0.1s linear;
+        }
+        .parallax-yellow { background: radial-gradient(circle, rgba(250,204,21,0.35), transparent 60%); }
+        .parallax-orange { background: radial-gradient(circle, rgba(249,115,22,0.35), transparent 60%); }
+        .parallax-purple { background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 60%); }
+        
+        /* Count-up badge styling (for the number) */
+        .countup-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.25rem;
+            height: 2.25rem;
+            padding: 0 0.5rem;
+            border-radius: 9999px;
+            background: rgba(234,179,8,0.15);
+            border: 1px solid rgba(234,179,8,0.35);
+            color: #fde68a; /* yellow-200 */
+            font-weight: 700;
+            margin: 0 0.25rem;
+        }
+        
+        /* Confetti */
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 12px;
+            opacity: 0.9;
+            border-radius: 2px;
+            will-change: transform, opacity;
+            pointer-events: none;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
+        }
+        
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -567,8 +652,8 @@
             </div>
             
             <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center px-4 mb-12">
-                <a href="#register" class="px-8 sm:px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-lg sm:text-xl font-bold hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center hover-text pulse-text glow-button">
-                    <i class="fas fa-rocket mr-3"></i> Register Now
+                <a href="#register" aria-disabled="true" class="px-8 sm:px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-lg sm:text-xl font-bold hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 text-center flex items-center justify-center hover-text pulse-text glow-button opacity-60 cursor-not-allowed pointer-events-none">
+                    <i class="fas fa-ban mr-3"></i> Registration Closed
                 </a>
                 <a href="#themes" class="px-8 sm:px-10 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-lg sm:text-xl font-bold hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center hover-text pulse-text glow-button">
                     <i class="fas fa-compass mr-3 text-purple-400"></i> Explore Themes
@@ -580,12 +665,12 @@
             
             <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto mb-12">
                 <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 hover-text status-pulse">
-                    <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                    <span class="text-gray-300 hero-text">Registrations Open</span>
+                    <div class="w-3 h-3 bg-red-500 rounded-full mr-3 animate-pulse"></div>
+                    <span class="text-gray-300 hero-text">Registrations Closed</span>
                 </div>
                 <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 status-pulse">
                     <i class="fas fa-users text-blue-400 mr-3"></i>
-                    <span class="text-gray-300">Inter-College Event</span>
+                    <span class="text-gray-300">Open to all Departments</span>
                 </div>
                 <div class="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 status-pulse">
                     <i class="fas fa-calendar-alt text-purple-400 mr-3"></i>
@@ -1073,6 +1158,12 @@
             <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
         </div>
+        <!-- Parallax Shapes Layer -->
+        <div class="prizes-parallax" aria-hidden="true">
+            <div class="parallax-shape parallax-yellow" style="top:10%; left:5%; width:180px; height:180px;"></div>
+            <div class="parallax-shape parallax-orange" style="bottom:12%; right:8%; width:220px; height:220px;"></div>
+            <div class="parallax-shape parallax-purple" style="top:50%; left:60%; width:160px; height:160px;"></div>
+        </div>
         
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
@@ -1080,18 +1171,43 @@
                     <span class="text-yellow-400 font-medium">Win Amazing Rewards</span>
                 </div>
                 <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Prizes & Rewards</h2>
-                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Prizes will be announced soon. Stay tuned!</p>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Canva Pro subscriptions for winners: 1st – 1 year (₹4,000), 2nd – 6 months (₹2,000), 3rd – 3 months (₹1,000).</p>
                 
                 
             </div>
             
-            <div class="grid md:grid-cols-1 gap-8 mb-16">
-                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-10 backdrop-blur-sm text-center">
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div id="firstPrizeCard" class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-yellow-500/30 rounded-2xl p-10 backdrop-blur-sm text-center floating-card prize-card animate-glow" data-aos="fade-up" data-aos-delay="0" data-aos-duration="700">
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4">
                         <i class="fas fa-trophy text-yellow-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-yellow-400 mb-2">Prizes</h3>
-                    <p class="text-gray-300">Will be announced soon. Please check back later.</p>
+                    <h3 class="text-2xl font-bold text-yellow-400 mb-2">1st Prize</h3>
+                    <p class="text-gray-300">Canva Pro subscription for <span class="countup-badge"><span class="countup" data-target="1">0</span></span> Year</p>
+                    <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-sm">
+                        <i class="fas fa-tags mr-2"></i> Worth ₹4,000
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-10 backdrop-blur-sm text-center floating-card prize-card animate-glow" data-aos="fade-up" data-aos-delay="120" data-aos-duration="700">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30 mb-4">
+                        <i class="fas fa-medal text-purple-300 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-purple-300 mb-2">2nd Prize</h3>
+                    <p class="text-gray-300">Canva Pro subscription for <span class="countup-badge"><span class="countup" data-target="6">0</span></span> Months</p>
+                    <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-200 text-sm">
+                        <i class="fas fa-tags mr-2"></i> Worth ₹2,000
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-10 backdrop-blur-sm text-center floating-card prize-card animate-glow" data-aos="fade-up" data-aos-delay="240" data-aos-duration="700">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 border border-blue-500/30 mb-4">
+                        <i class="fas fa-award text-blue-300 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-blue-300 mb-2">3rd Prize</h3>
+                    <p class="text-gray-300">Canva Pro subscription for <span class="countup-badge"><span class="countup" data-target="3">0</span></span> Months</p>
+                    <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-200 text-sm">
+                        <i class="fas fa-tags mr-2"></i> Worth ₹1,000
+                    </div>
                 </div>
             </div>
         </div>
@@ -1121,10 +1237,10 @@
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
                 <div class="inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full mb-4">
-                    <span class="text-green-400 font-medium">Join the Hunt</span>
+                    <span class="text-red-400 font-medium">Registration Closed</span>
                 </div>
-                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Register for PhotoHunt</h2>
-                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Ready to showcase your photography skills? Register now for PhotoHunt 2025</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6 gradient-text section-header">Registration Closed</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Registration for PhotoHunt 2025 has ended. Thank you for your interest!</p>
             </div>
             
             <div class="max-w-4xl mx-auto bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-3xl p-8 md:p-12 backdrop-blur-sm relative overflow-hidden">
@@ -1132,7 +1248,7 @@
                 <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
                 
                 <div class="relative z-10">
-                    <form id="registrationForm" class="space-y-6">
+                    <form id="registrationForm" class="space-y-6" aria-disabled="true">
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium mb-2 text-gray-300">Full Name *</label>
@@ -1212,8 +1328,8 @@
                             <label for="terms" class="ml-2 text-sm text-gray-300">I agree to the <a href="#" class="text-indigo-400 hover:underline">terms and conditions</a></label>
                         </div>
                         
-                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl text-lg font-bold hover:shadow-2xl hover:shadow-green-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center glow-button">
-                            <i class="fas fa-paper-plane mr-3"></i> Submit Registration
+                        <button type="button" disabled class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl text-lg font-bold transition-all duration-300 flex items-center justify-center glow-button opacity-60 cursor-not-allowed">
+                            <i class="fas fa-ban mr-3"></i> Registration Closed
                         </button>
                     </form>
                 </div>
@@ -1375,10 +1491,17 @@
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
         const RAW_BUCKET = 'PHOTOHUNT-SUBMISSIONS';
         const BUCKET_ID = RAW_BUCKET.toLowerCase();
+        
+        // Registration status flag
+        const REGISTRATION_OPEN = false;
 
         // Registration form handler
         document.getElementById('registrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            if (typeof REGISTRATION_OPEN !== 'undefined' && !REGISTRATION_OPEN) {
+                alert('Registration has ended. Thank you for your interest!');
+                return;
+            }
             
             // Validate that a photo is uploaded
             const photoFile = document.getElementById('photoUpload').files[0];
@@ -1512,6 +1635,109 @@
                 easing: 'ease-in-out'
             });
         });
+        
+        // Prize cards tilt-on-hover (lightweight, respects reduced motion)
+        document.addEventListener('DOMContentLoaded', function() {
+            const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) return;
+            const cards = document.querySelectorAll('.prize-card');
+            const maxTilt = 10; // degrees
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const tiltX = ((y / rect.height) - 0.5) * -2 * maxTilt; // invert for natural tilt
+                    const tiltY = ((x / rect.width) - 0.5) * 2 * maxTilt;
+                    card.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        });
+
+        // Prizes: Count-up, Confetti (1st prize), Parallax shapes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Count-up on reveal
+            const counters = document.querySelectorAll('.countup');
+            if (counters.length) {
+                const easeOutQuad = t => t * (2 - t);
+                const animateCount = (el) => {
+                    const target = parseInt(el.getAttribute('data-target') || '0', 10);
+                    const duration = 1000;
+                    const startTime = performance.now();
+                    const startVal = 0;
+                    function frame(now) {
+                        const progress = Math.min(1, (now - startTime) / duration);
+                        const eased = easeOutQuad(progress);
+                        const value = Math.round(startVal + (target - startVal) * eased);
+                        el.textContent = value.toString();
+                        if (progress < 1) requestAnimationFrame(frame);
+                    }
+                    requestAnimationFrame(frame);
+                };
+                const obs = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const el = entry.target;
+                            animateCount(el);
+                            observer.unobserve(el);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                counters.forEach(c => obs.observe(c));
+            }
+
+            // Confetti for 1st prize
+            const firstPrize = document.getElementById('firstPrizeCard');
+            if (firstPrize) {
+                const colors = ['#fde047', '#fb923c', '#f472b6', '#60a5fa', '#34d399'];
+                let lastBurst = 0;
+                function launchConfetti(container, count = 40) {
+                    const now = Date.now();
+                    if (now - lastBurst < 400) return; // debounce
+                    lastBurst = now;
+                    const rect = container.getBoundingClientRect();
+                    for (let i = 0; i < count; i++) {
+                        const piece = document.createElement('div');
+                        piece.className = 'confetti-piece';
+                        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        piece.style.left = Math.random() * rect.width + 'px';
+                        piece.style.top = (rect.height * 0.2 + Math.random() * rect.height * 0.3) + 'px';
+                        const duration = 800 + Math.random() * 900;
+                        const rotate = Math.floor(Math.random() * 360);
+                        piece.style.transform = `translateY(0) rotate(${rotate}deg)`;
+                        piece.style.animation = `confettiFall ${duration}ms ease-out forwards`;
+                        container.appendChild(piece);
+                        setTimeout(() => piece.remove(), duration + 50);
+                    }
+                }
+                firstPrize.addEventListener('mouseenter', () => launchConfetti(firstPrize, 25));
+                firstPrize.addEventListener('click', () => launchConfetti(firstPrize, 60));
+            }
+
+            // Parallax background shapes inside #prizes
+            const prizesSection = document.getElementById('prizes');
+            if (prizesSection) {
+                const shapes = prizesSection.querySelectorAll('.parallax-shape');
+                const speeds = [12, 18, 25];
+                function handleMove(e) {
+                    const rect = prizesSection.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    const dx = (e.clientX - cx) / rect.width;  // -0.5..0.5
+                    const dy = (e.clientY - cy) / rect.height; // -0.5..0.5
+                    shapes.forEach((shape, i) => {
+                        const speed = speeds[i % speeds.length];
+                        const tx = -(dx * speed);
+                        const ty = -(dy * speed);
+                        shape.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+                    });
+                }
+                prizesSection.addEventListener('mousemove', handleMove);
+            }
+        });
         // Chatbot functionality
         function toggleChatbot() {
             const chatbot = document.getElementById('chatbot');
@@ -1573,15 +1799,20 @@
             if (lowerMsg.includes('hello') || lowerMsg.includes('hi') || lowerMsg.includes('hey')) {
                 response = "Hello there! 📸 I'm your PhotoHunt 2025 assistant. How can I help you today?";
             } else if (lowerMsg.includes('prize') || lowerMsg.includes('prizes') || lowerMsg.includes('reward')) {
-                response = "PhotoHunt 2025 offers exciting prizes worth ₹8,000+! 🏆\n\n" +
-                          "Will me Announced Soon";
+                response = "Prizes for PhotoHunt 2025 🏆\n\n" +
+                          "• 1st Prize: Canva Pro — 1 Year (Worth ₹4,000)\n" +
+                          "• 2nd Prize: Canva Pro — 6 Months (Worth ₹2,000)\n" +
+                          "• 3rd Prize: Canva Pro — 3 Months (Worth ₹1,000)\n\n" +
+                          "Good luck to all participants!";
 
             } else if (lowerMsg.includes('theme')) {
                 response = "PhotoHunt 2025 features 6 exciting themes:\n\n" +
                           "🏞️ " +
                           "🏙️ " +
-                          "👥 Refer to Themes Section"
+                          "👥 Refer to Themes Section\n\n" +
                           "Participants will choose their preferred theme during registration. Final theme assignments will be announced closer to the event date to ensure fairness and variety.";
+            } else if (lowerMsg.includes('register') || lowerMsg.includes('sign up')) {
+                response = "Registration for PhotoHunt 2025 has ended. \n\nThank you for your interest! Please check back for future events or follow our announcements for updates.";
             } else if (lowerMsg.includes('rule') || lowerMsg.includes('guideline')) {
                 response = "Here are the key rules for PhotoHunt 2025:\n\n" +
                           "✅ Open to all college students (1st to final year)\n" +
@@ -1593,24 +1824,7 @@
                           "✅ Max file size: 10MB\n" +
                           "✅ JPG, PNG, or WEBP format\n" +
                           "✅ No watermarks or logos\n" +
-                          "✅ No offensive or inappropriate content\n\n" +
-                          "Competition Format:\n" +
-                          "1️⃣ Submission Round: Online photo submission\n" +
-                          "2️⃣ Final Round: Shortlisted entries compete for prizes\n\n" +
-                          "For full details, visit the Rules section on our website!";
-            } else if (lowerMsg.includes('register') || lowerMsg.includes('sign up')) {
-                response = "You can register for PhotoHunt 2025 by:\n\n" +
-                          "1️⃣ Visiting the Registration section on our website\n" +
-                          "2️⃣ Filling out the registration form\n" +
-                          "3️⃣ Uploading your photo submission\n" +
-                          "4️⃣ Submitting your entry\n\n" +
-                          "Registration is free and open to all college students!";
-            } else if (lowerMsg.includes('date') || lowerMsg.includes('when')) {
-                response = "PhotoHunt 2025 is happening this year! 📅\n\n" +
-                          "• Registration Deadline: Coming soon\n" +
-                          "• Submission Round: Coming soon\n" +
-                          "• Final Round: Coming soon\n\n" +
-                          "Stay tuned for exact dates!";
+                          "✅ No offensive or inappropriate content\n\n";
             } else if (lowerMsg.includes('thank')) {
                 response = "You're welcome! 📸 If you have any more questions about PhotoHunt 2025, feel free to ask!";
             } else if (lowerMsg.includes('help')) {
